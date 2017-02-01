@@ -17,7 +17,8 @@ class Piece
     # moves contains list of end positions
   end
 
-  def move_helper(end_pos)
+  def move
+    sliding_moves
 
   end
 end

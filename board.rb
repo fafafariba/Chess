@@ -2,7 +2,6 @@ require_relative 'piece'
 require_relative 'null_piece'
 
 class Board
-
   # https://en.wikipedia.org/wiki/Chess_symbols_in_Unicode
   # Cotains Chess piece unicode
 
@@ -16,24 +15,25 @@ class Board
   attr_reader :grid
 
   def initialize
-    @grid = Array.new(8) { Array.new(8, ".") }
+    @grid = Array.new(8) { Array.new(8, NullPiece.instance) }
     populate
   end
 
   def populate
-    @grid = @grid.map.with_index do |row, row_num|
-      row.map.with_index do |el, col_num|
+    @grid = @grid.each_index do |row_num|
+      (0..7).to_a.each_index do |col_num|
         if row_num.between?(2, 5)
-          el = NullPiece.instance
+          NullPiece.instance
         elsif row_num == 6
-          el = Piece.new("\u265F", self, :red)
+          Piece.new("\u265F", self, :red)
         elsif row_num == 1
-          el = Piece.new("\u265F", self, :blue)
+          Piece.new("\u265F", self, :blue)
         elsif row_num == 0
-          el = Piece.new(PIECE_TYPES[col_num], self, :blue)
+           Queen.new(:blue, [row_num, col_num], self)
         else
-          el = Piece.new(PIECE_TYPES.reverse[col_num], self, :red)
+          Piece.new(PIECE_TYPES.reverse[col_num], self, :red)
         end
+        self[[1,5]] = Queen.new(:blue, [1,5], self)
       end
     end
   end
@@ -81,11 +81,4 @@ class Board
     row, col = pos
     @grid[row][col] = mark
   end
-
 end
-
-new_board = Board.new
-new_board.display
-puts "------------------------"
-new_board.move_piece([1,1], [2,2])
-new_board.display

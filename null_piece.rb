@@ -9,5 +9,6 @@ class NullPiece < Piece
 
   def initialize
     @value = " "
+    @color = nil
   end
 end

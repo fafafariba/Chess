@@ -12,11 +12,11 @@ class Display
     @board.grid.each_with_index do |row, i|
       row.each_with_index do |col, j|
         if [i,j] == @cursor.cursor_pos || @board[[i, j]].selected
-          print " #{col.value} ".colorize(:color => col.color, :background => :green)
+          print " #{col.value} ".colorize(:color => col.color, :background => :green) unless col.nil?
         else
           #WADE METHOD vv
           background_color = render_checkerboard(i , j)
-          print " #{col.value} ".colorize(:color => col.color, :background => background_color)
+          print " #{col.value} ".colorize(:color => col.color, :background => background_color) unless col.nil?
         end
       end
       print "\n"
@@ -32,13 +32,13 @@ class Display
 
   def test_play
     while true
-      system('clear')
+      # system('clear')
       render
       @cursor.get_input
     end
   end
 end
 
-new_board = Board.new
-display = Display.new(new_board)
-display.test_play
+# new_board = Board.new
+# display = Display.new(new_board)
+# display.test_play
